@@ -266,6 +266,7 @@ if (!email || !emailRegex.test(email)) {
 </div>
           </div>
         </div>
+      </div>
     </footer>
   );
 };
