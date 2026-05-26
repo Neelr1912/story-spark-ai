@@ -17,7 +17,7 @@ const STOP_WORDS = new Set([
 const getOverview = async (token: ITokenPayload) => {
   const userObjectId = new Types.ObjectId(token._id);
 
-  const posts = await Post.find({ author: userObjectId }).lean();
+  const posts = await Post.find({ author: userObjectId }).lean() as Array<Record<string, any>>;
   const totalStories = posts.length;
   const totalWords = posts.reduce((sum, p) => {
     return sum + (p.content?.split(/\s+/).length || 0);
@@ -84,7 +84,7 @@ const getHeatmap = async (token: ITokenPayload) => {
   const posts = await Post.find({
     author: userObjectId,
     publishedAt: { $gte: oneYearAgo },
-  }).lean();
+  }).lean() as Array<Record<string, any>>;
 
   const heatmap: Record<string, number> = {};
   posts.forEach((p) => {
@@ -137,7 +137,7 @@ const getWordCloud = async (token: ITokenPayload) => {
 
 const getProductiveHours = async (token: ITokenPayload) => {
   const userObjectId = new Types.ObjectId(token._id);
-  const posts = await Post.find({ author: userObjectId }).lean();
+  const posts = await Post.find({ author: userObjectId }).lean() as Array<Record<string, any>>;
 
   const hourCount: Record<number, number> = {};
   for (let i = 0; i < 24; i++) hourCount[i] = 0;
