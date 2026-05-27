@@ -536,7 +536,7 @@
 
 :root {
   --header-height: 82px;
-  font-family: "Roboto Condensed", serif;
+  font-family: "Roboto Condensed", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
   font-synthesis: none;
@@ -545,11 +545,22 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   scroll-behavior: smooth;
+}
+
+/* Firefox scrollbar support */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #646c727e #6a78842c;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -714,5 +725,10 @@ html.dark .scroll-fab-btn:active {
   .magic-cursor-glow,
   .magic-cursor-sparkle {
     transform: none;
+  }
+  .magic-cursor-sparkle,
+  .magic-cursor-dot,
+  .magic-cursor-glow {
+    display: none;
   }
 }
