@@ -29,7 +29,7 @@
 *Generate, explore, and share multiple story variations powered by OpenAI & Gemini.*
 
 <br/>
-[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-storysparkai.vercel.app-6c3ff7?style=for-the-badge&logoColor=white)](https://storysparkai.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-storysparkai--five.vercel.app-6c3ff7?style=for-the-badge&logoColor=white)](https://storysparkai-five.vercel.app/)
 &nbsp;
 [![License: MIT](https://img.shields.io/github/license/ronisarkarexe/story-spark-ai?style=for-the-badge&color=22c55e)](https://github.com/ronisarkarexe/story-spark-ai/blob/master/LICENSE)
 &nbsp;
@@ -76,7 +76,7 @@
 
 Whether you're a writer battling creative block, an educator exploring narrative structure, or simply someone who loves stories — StorySpark AI is your intelligent storytelling companion.
 
-> 🌐 **Live at:** [storysparkai.vercel.app](https://storysparkai.vercel.app/)
+> 🌐 **Live at:** [storysparkai-five.vercel.app](https://storysparkai-five.vercel.app/)
 
 ---
 
@@ -276,7 +276,7 @@ This monorepo deploys as **two separate Vercel projects**:
 
 | Project | Root Directory | Example Domain |
 |---|---|---|
-| 🖥️ Frontend | `frontend` | `storysparkai.vercel.app` |
+| 🖥️ Frontend | `frontend` | `storysparkai-five.vercel.app` |
 | ⚙️ Backend API | `backend` | `apistorysparkai.vercel.app` |
 
 **Frontend environment variables** *(set in Vercel dashboard → redeploy after changes)*:

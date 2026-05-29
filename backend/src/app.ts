@@ -16,7 +16,7 @@ app.set("trust proxy", 1); // Trust first proxy to securely read req.ip
 const defaultCorsOrigins = [
   "http://localhost:4001",
   "http://localhost:4002",
-  "https://storysparkai.vercel.app",
+  "https://storysparkai-five.vercel.app",
 ];
 
 const corsOrigins =
