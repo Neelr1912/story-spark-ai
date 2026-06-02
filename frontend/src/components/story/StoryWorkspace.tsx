@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
 import ChapterSidebar from "./ChapterSidebar";
+import VersionHistoryPanel from "./VersionHistoryPanel";
 import StoryViewer from "./StoryViewer";
 import ContinueStoryButton from "./ContinueStoryButton";
 
@@ -25,6 +26,8 @@ const StoryWorkspace = () => {
       <ChapterSidebar
         chapters={currentStory.chapters}
       />
+
+      <VersionHistoryPanel />
 
       <div className="flex flex-col flex-1">
         <StoryViewer
