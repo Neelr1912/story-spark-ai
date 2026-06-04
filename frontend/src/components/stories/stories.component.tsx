@@ -50,6 +50,8 @@ const StoriesComponent = () => {
   const [selectedGenre, setSelectedGenre] = useState<string>("");
   const [selectedLength, setSelectedLength] = useState<string>("medium");
   const [textareaValue, setTextareaValue] = useState<string>("");
+  const DRAFT_KEY = "storyspark_story_draft_v1";
+  const [draftStatus, setDraftStatus] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [selectedLanguage, setSelectedLanguage] = useState<string>("English");
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState<boolean>(false);
@@ -62,10 +64,15 @@ const StoriesComponent = () => {
     parseInt(localStorage.getItem("guestRequestCount") || "0", 10),
   );
   const [showLimitModal, setShowLimitModal] = useState<boolean>(false);
+  const [showRestorePrompt, setShowRestorePrompt] = useState(false);
+ 
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+
+  
+
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -109,6 +116,42 @@ const StoriesComponent = () => {
   useEffect(() => {
     setValue("prompt", textareaValue);
   }, [textareaValue, setValue]);
+
+useEffect(() => {
+  const savedDraft = localStorage.getItem(DRAFT_KEY);
+
+  if (savedDraft && savedDraft.trim().length > 0) {
+    setShowRestorePrompt(true);
+  }
+}, []);
+
+
+const handleRestoreDraft = () => {
+  const savedDraft = localStorage.getItem(DRAFT_KEY);
+
+  if (savedDraft) {
+    setTextareaValue(savedDraft);
+    setDraftStatus("Draft Restored");
+  }
+
+  setShowRestorePrompt(false);
+};
+
+const handleDiscardDraft = () => {
+  localStorage.removeItem(DRAFT_KEY);
+  setShowRestorePrompt(false);
+};
+
+useEffect(() => {
+  if (!textareaValue.trim()) return;
+
+  const timer = setTimeout(() => {
+    localStorage.setItem(DRAFT_KEY, textareaValue);
+    setDraftStatus("Draft Saved");
+  }, 2000);
+
+  return () => clearTimeout(timer);
+}, [textareaValue]);
 
   useEffect(() => {
     return () => {
@@ -159,7 +202,10 @@ const StoriesComponent = () => {
         toast.success(res.message);
         setStories(res.data as IStories[]);
         setSelectedPrompt("");
+        setTextareaValue("");
         setValue("prompt", "");
+        localStorage.removeItem(DRAFT_KEY);
+        setDraftStatus("");
         reset();
         if (!login) {
           const newCount = guestRequestCount + 1;
@@ -191,6 +237,8 @@ const StoriesComponent = () => {
     setTextareaValue("");
     setSelectedPrompt("");
     setValue("prompt", "");
+    localStorage.removeItem(DRAFT_KEY);
+    setDraftStatus("");
 
     if (inputRef.current) {
       inputRef.current.focus();
@@ -199,8 +247,11 @@ const StoriesComponent = () => {
 
   const handlePublishSuccess = () => {
     setTextareaValue("");
-    setSelectedPrompt("");
-    setValue("prompt", "");
+  setSelectedPrompt("");
+  setValue("prompt", "");
+
+  localStorage.removeItem(DRAFT_KEY);
+  setDraftStatus("");
     reset();
   };
 
@@ -377,7 +428,31 @@ const StoriesComponent = () => {
         </div>
       </div>
     </div>
+    {showRestorePrompt && (
+  <div className="mb-3 p-3 rounded-lg border border-indigo-500/40 bg-indigo-500/10">
+    <p className="text-sm text-gray-300 mb-2">
+      📄 A previously saved draft was found. Restore it?
+    </p>
 
+    <div className="flex gap-2">
+      <button
+        type="button"
+        onClick={handleRestoreDraft}
+        className="px-3 py-1 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white text-sm"
+      >
+        Restore
+      </button>
+
+      <button
+        type="button"
+        onClick={handleDiscardDraft}
+        className="px-3 py-1 rounded-md bg-red-600 hover:bg-red-700 text-white text-sm"
+      >
+        Discard
+      </button>
+    </div>
+  </div>
+)}
     <div className="relative">
       <textarea
   {...register("prompt")}
@@ -395,7 +470,9 @@ const StoriesComponent = () => {
         placeholder="Every great story begins with a single idea. What's yours?"
         value={textareaValue}
         maxLength={MAX_PROMPT_LENGTH}
-        onChange={(e) => setTextareaValue(e.target.value)}
+        onChange={(e) => {
+          setTextareaValue(e.target.value);
+    }}
         onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
@@ -456,7 +533,14 @@ const StoriesComponent = () => {
         </span>
       </div>
     </div>
+    
 
+{draftStatus && (
+   <p className="text-xs text-green-500 mt-2 px-1">
+    💾 {draftStatus}
+   </p>
+)}
+    
     <p className="text-xs text-gray-500 mt-1 px-1">
       💡  <span className="font-medium">Keyboard tip:</span> Press{" "}
       <kbd className="px-1 py-0.5 text-xs bg-gray-700 rounded border border-gray-600">
