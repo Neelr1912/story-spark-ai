@@ -30,6 +30,14 @@ interface StoriesComponentProps {
   isLoading?: boolean;
 }
 
+const escapeHtml = (str: string) =>
+  str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
 const StoriesViewComponent: React.FC<StoriesComponentProps> = ({
   stories,
   isLogin,
@@ -236,7 +244,7 @@ const handleGenerateCharacterProfile = async () => {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
             <div className="">
               <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-blue-400">
-                {selectedStory?.title}
+                {selectedStory?.title ? escapeHtml(selectedStory.title) : ""}
               </h1>
             </div>
             <div className="flex justify-start sm:justify-end">
@@ -254,7 +262,7 @@ const handleGenerateCharacterProfile = async () => {
                     >
                       <img
                         src={story.imageURL}
-                        alt={story.title}
+                        alt={escapeHtml(story.title)}
                         className="w-full h-full object-cover rounded-full"
                       />
                     </button>
@@ -319,7 +327,7 @@ const handleGenerateCharacterProfile = async () => {
             </div>
             <div id="story-content" className="prose prose-invert max-w-none text-slate-300 leading-relaxed tracking-wide relative z-10">
               {selectedStory ? (
-                <p className="break-words">{selectedStory.content}</p>
+                <p className="break-words">{escapeHtml(selectedStory.content)}</p>
               ) : (
                 <p>No story available. Please generate a story first.</p>
               )}
@@ -412,10 +420,10 @@ const handleGenerateCharacterProfile = async () => {
                    {selectedStory.tag.toUpperCase()}
                   </div>
                   <h6 className="mb-1 text-gray-300 text-xl font-semibold">
-                    {selectedStory.title}
+                    {escapeHtml(selectedStory.title)}
                   </h6>
                   <p className="text-gray-400 font-light breakwords text-sm sm:text-base">
-                    {getShortenedText(selectedStory.content)}
+                    {escapeHtml(getShortenedText(selectedStory.content))}
                   </p>
                 </div>
               </div>
