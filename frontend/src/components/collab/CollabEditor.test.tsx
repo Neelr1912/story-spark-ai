@@ -1,5 +1,5 @@
 import { render, screen, act } from '@testing-library/react';
-import { vi } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import '@testing-library/jest-dom/vitest';
 import CollabEditor from './CollabEditor';
 import * as Y from 'yjs';
@@ -229,6 +229,7 @@ describe('CollabEditor', () => {
     
     // Simulate selection change on the active Quill instance to trigger local state changes
     if (globalActiveQuillInstance) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const selectionChangeCallback = (globalActiveQuillInstance as any).listeners['selection-change']?.[0];
       if (selectionChangeCallback) {
         act(() => selectionChangeCallback({ index: 0, length: 5 }));

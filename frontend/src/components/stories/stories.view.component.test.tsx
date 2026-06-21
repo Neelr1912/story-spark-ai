@@ -114,6 +114,7 @@ describe('StoriesViewComponent - Core Rendering', () => {
   it('renders the first story correctly when stories are provided', () => {
     render(
       <StoriesViewComponent
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         stories={mockStories as any}
         isLogin={true}
         setStories={mockSetStories}
@@ -138,6 +139,7 @@ describe('StoriesViewComponent - Alternate Endings Generation', () => {
 
     render(
       <StoriesViewComponent
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         stories={mockStories as any}
         isLogin={true}
         setStories={mockSetStories}
@@ -167,6 +169,7 @@ describe('StoriesViewComponent - Alternate Endings Generation', () => {
 
     render(
       <StoriesViewComponent
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         stories={mockStories as any}
         isLogin={false}
         setStories={mockSetStories}

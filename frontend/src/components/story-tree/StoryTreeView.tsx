@@ -294,6 +294,7 @@ export const StoryTreeView: React.FC<StoryTreeViewProps> = ({ rootStoryId }) => 
       return { nodes: [], edges: [] };
     }
     // Typecast nodes to layout elements
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const dbNodes: DBStoryNode[] = data.nodes.map((node: any) => ({
       id: node.id,
       title: node.title,
@@ -354,6 +355,7 @@ export const StoryTreeView: React.FC<StoryTreeViewProps> = ({ rootStoryId }) => 
         rootStoryId={rootStoryId}
         nodes={treeData.nodes}
         edges={treeData.edges}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         rawNodes={data.nodes as any}
       />
     </ReactFlowProvider>

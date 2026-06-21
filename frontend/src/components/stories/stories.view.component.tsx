@@ -9,6 +9,7 @@ import {
   useGenerateAlternateEndingsMutation,
   useGenerateFreeAlternateEndingsMutation,
 } from "../../redux/apis/ai.model.api";
+import DOMPurify from "dompurify";
 
 export interface IStories {
   uuid: string;
@@ -329,7 +330,10 @@ const handleGenerateCharacterProfile = async () => {
             </div>
             <div id="story-content" className="prose prose-invert max-w-none text-slate-300 leading-relaxed tracking-wide relative z-10">
               {selectedStory ? (
-                <p className="break-words">{selectedStory.content}</p>
+                <div 
+                  className="break-words" 
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(selectedStory.content) }} 
+                />
               ) : (
                 <p>No story available. Please generate a story first.</p>
               )}

@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { describe, it, expect, vi } from "vitest";
 import { createDocxBlob, downloadBlob, getSafeFileName, createWorkspaceDocxBlob, exportWorkspacePDF } from "../story-export.utils";
 import jsPDF from "jspdf";
 

@@ -107,7 +107,11 @@ const createPost = async (payload: IPostPayload, token: ITokenPayload) => {
     let branchDepth = 0;
 
     if (payload.parentStoryId) {
-      const parent = await Post.findById(payload.parentStoryId);
+      const parentIdStr = String(payload.parentStoryId);
+      if (!/^[0-9a-fA-F]{24}$/.test(parentIdStr)) {
+        throw new ApiError(httpStatus.BAD_REQUEST, "Invalid parentStoryId!");
+      }
+      const parent = await Post.findById(parentIdStr);
       if (parent) {
         parentStoryId = parent._id;
         rootStoryId = parent.rootStoryId || parent._id;
