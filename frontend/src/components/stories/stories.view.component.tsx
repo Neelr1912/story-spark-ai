@@ -7,6 +7,7 @@ import { getShortenedText, ITopicData, topicsData } from "./stories.utils";
 import toast, { Toaster } from "react-hot-toast";
 import { useCreatePostMutation } from "../../redux/apis/post.api";
 import jsPDF from "jspdf";
+import DOMPurify from "dompurify";
 import AudioPlayer, { AudioPlayerHandle, NarrationPlaybackState } from "../AudioPlayer";
 import StoryTranslator from "../translate/StoryTranslator";
 import {
@@ -124,7 +125,7 @@ const StoriesViewComponent: React.FC<StoriesComponentProps> = ({
   }, [selectedStory?.uuid]);
 
   const sentenceSegments = useMemo(() => {
-    return buildSentenceSegments(selectedStory?.content ?? "");
+    return buildSentenceSegments(selectedStory?.content ? DOMPurify.sanitize(selectedStory.content) : "");
   }, [selectedStory?.content]);
 
   const handleGenerateAlternateEndings = async () => {
@@ -374,7 +375,7 @@ const handleGenerateCharacterProfile = async () => {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
             <div className="">
               <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-blue-400">
-                {selectedStory?.title ?? ""}
+                {selectedStory?.title ? DOMPurify.sanitize(selectedStory.title) : ""}
               </h1>
             </div>
             <div className="flex justify-start sm:justify-end">
@@ -392,7 +393,7 @@ const handleGenerateCharacterProfile = async () => {
                     >
                       <img
                         src={story.imageURL}
-                        alt={story.title}
+                        alt={story.title ? DOMPurify.sanitize(story.title) : ""}
                         className="w-full h-full object-cover rounded-full"
                       />
                     </button>
@@ -513,7 +514,8 @@ const handleGenerateCharacterProfile = async () => {
                   })
                 ) : (
                   (() => {
-                    const rawParts = selectedStory?.content?.split(/(\s+)/) ?? [];
+                    const sanitizedContent = selectedStory?.content ? DOMPurify.sanitize(selectedStory.content) : "";
+                    const rawParts = sanitizedContent.split(/(\s+)/);
                     let wordOffset = 0;
                     return rawParts.map((part, partIdx) => {
                       if (part === "") return null;
@@ -666,7 +668,7 @@ const handleGenerateCharacterProfile = async () => {
                           </div>
                           <div className="space-y-4">
                             <div className="bg-white dark:bg-slate-950 p-4 rounded-lg border border-slate-200 dark:border-slate-800 leading-relaxed text-slate-600 dark:text-slate-300 text-sm italic whitespace-pre-wrap">
-                              "{currentEndingData.ending}"
+                              "{currentEndingData.ending ? DOMPurify.sanitize(currentEndingData.ending) : ""}"
                             </div>
                             <details className="group border border-slate-200 dark:border-slate-800 rounded-lg overflow-hidden bg-white dark:bg-transparent">
                               <summary className="list-none flex items-center justify-between p-4 text-xs font-semibold text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer select-none">
@@ -674,7 +676,7 @@ const handleGenerateCharacterProfile = async () => {
                                 <span className="transition-transform duration-200 group-open:rotate-180">▼</span>
                               </summary>
                               <div className="p-4 border-t border-slate-200 dark:border-slate-800 text-sm text-slate-500 leading-relaxed max-h-60 overflow-y-auto whitespace-pre-wrap bg-slate-50/50 dark:bg-transparent">
-                                {currentEndingData.fullStory}
+                                {currentEndingData.fullStory ? DOMPurify.sanitize(currentEndingData.fullStory) : ""}
                               </div>
                             </details>
                           </div>
@@ -768,13 +770,13 @@ const handleGenerateCharacterProfile = async () => {
                 </div>
                 <div className="px-3 py-1">
                   <div className="mb-2 inline-flex items-center rounded-full bg-purple-600 py-1 px-3 text-xs font-semibold text-white shadow-sm">
-                   {selectedStory.tag.toUpperCase()}
+                   {selectedStory.tag ? DOMPurify.sanitize(selectedStory.tag).toUpperCase() : ""}
                   </div>
                   <h6 className="mb-1 text-gray-300 text-xl font-semibold">
-                    {selectedStory.title}
+                    {selectedStory.title ? DOMPurify.sanitize(selectedStory.title) : ""}
                   </h6>
                   <p className="text-gray-400 font-light breakwords text-sm sm:text-base">
-                    {getShortenedText(selectedStory.content)}
+                    {getShortenedText(selectedStory.content ? DOMPurify.sanitize(selectedStory.content) : "")}
                   </p>
                 </div>
               </div>
