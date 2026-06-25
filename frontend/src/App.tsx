@@ -43,6 +43,7 @@ const ResourceDetailComponent = lazy(() => import("./components/community/resour
 const StoriesComponent = lazy(() => import("./components/stories/stories.component"));
 const BranchingStory = lazy(() => import("./components/stories/BranchingStory"));
 const StoryWorkspace = lazy(() => import("./components/story/StoryWorkspace"));
+const StoryBranchingPage = lazy(() => import("./components/story-tree/StoryBranchingPage"));
 const CollabHome = lazy(() => import("./components/collab/CollabHome"));
 const CollabRoom = lazy(() => import("./components/collab/CollabRoom"));
 const DashboardComponent = lazy(() => import("./components/dashboard/dashboard.component"));
@@ -112,6 +113,7 @@ const router = createBrowserRouter([
           { path: "stories", element: <StoriesComponent /> },
           { path: "branching-story", element: <BranchingStory /> },
           { path: "story-workspace", element: <StoryWorkspace /> },
+          { path: "story-tree/:rootStoryId", element: <StoryBranchingPage /> },
         ],
       },
       { path: "*", element: <NotFoundComponent /> },
