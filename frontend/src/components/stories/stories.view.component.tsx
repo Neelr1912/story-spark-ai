@@ -8,6 +8,23 @@ import toast, { Toaster } from "react-hot-toast";
 import { useCreatePostMutation } from "../../redux/apis/post.api";
 import jsPDF from "jspdf";
 import DOMPurify from "dompurify";
+
+/**
+ * Sanitize a URL to only allow safe schemes (http, https, data:image).
+ * Returns an empty string for any URL with a dangerous scheme (e.g. javascript:).
+ */
+const sanitizeUrl = (url: string | undefined): string => {
+  if (!url) return "";
+  const trimmed = url.trim();
+  if (
+    trimmed.startsWith("http://") ||
+    trimmed.startsWith("https://") ||
+    trimmed.startsWith("data:image/")
+  ) {
+    return trimmed;
+  }
+  return "";
+};
 import AudioPlayer, { AudioPlayerHandle, NarrationPlaybackState } from "../AudioPlayer";
 import StoryTranslator from "../translate/StoryTranslator";
 import {
@@ -392,7 +409,7 @@ const handleGenerateCharacterProfile = async () => {
                       onClick={() => handelStorySelection(story)}
                     >
                       <img
-                        src={story.imageURL}
+                        src={sanitizeUrl(story.imageURL)}
                         alt={story.title ? DOMPurify.sanitize(story.title) : ""}
                         className="w-full h-full object-cover rounded-full"
                       />
@@ -557,7 +574,7 @@ const handleGenerateCharacterProfile = async () => {
                   <AudioPlayer 
                     ref={audioPlayerRef} 
                     text={selectedStory.content} 
-                    title={selectedStory.title} 
+                    title={DOMPurify.sanitize(selectedStory.title)} 
                     onWordIndexChange={setNarrationWordIndex} 
                     onPlaybackStateChange={setNarrationState} 
                   />
@@ -763,7 +780,7 @@ const handleGenerateCharacterProfile = async () => {
               <div className="relative flex flex-col rounded-lg">
                 <div className="relative m-3 overflow-hidden text-white rounded-xl">
                   <img
-                    src={selectedStory.imageURL}
+                    src={sanitizeUrl(selectedStory.imageURL)}
                     alt="card-image"
                     className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
                   />
