@@ -25,6 +25,7 @@ import jsPDF from "jspdf";
 import StoryTranslator from "../translate/StoryTranslator";
 import StoryEndingGenerator from "./StoryEndingGenerator";
 import StoryImprovementSuggestions from "./StoryImprovementSuggestions";
+import StoryRecommendations from "./StoryRecommendations";
 
 export interface IStories {
   uuid: string;
@@ -63,6 +64,7 @@ const StoriesViewComponent: React.FC<StoriesComponentProps> = ({
   const [showGenreTransformation, setShowGenreTransformation] = useState<boolean>(false);
   const [showEndingGenerator, setShowEndingGenerator] = useState(false);
   const [showImprovementPanel, setShowImprovementPanel] = useState(false);
+  const [showRecommendations, setShowRecommendations] = useState(false);
 
   const [showWorldMap, setShowWorldMap] = useState<boolean>(false);
 
@@ -628,6 +630,17 @@ if (!stories || stories.length === 0) {
   <StoryWorldMap
     locations={storyLocations}
     onClose={() => setShowWorldMap(false)}
+  />
+)}
+
+{showRecommendations && selectedStory && (
+  <StoryRecommendations
+    story={{
+      title: selectedStory.title,
+      content: selectedStory.content,
+      tag: selectedStory.tag,
+    }}
+    onClose={() => setShowRecommendations(false)}
   />
 )}
       <Toaster position="top-right" reverseOrder={false} />
